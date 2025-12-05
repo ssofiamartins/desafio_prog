@@ -1,0 +1,166 @@
+<meta charset="UTF-8">
+<script>
+    /*## Problema 3: Sistema de Estoque de Produtos com Preço
+
+Contexto: Uma loja pequena precisa gerenciar seu estoque. O sistema deve permitir adicionar produtos, remover, ajustar preços, e gerar relatórios de produtos caros, baratos e com baixo estoque.
+
+### Requisitos:
+1. Função para validar entrada: Valide quantidade e preço (use while para re-solicitar dados inválidos).
+2. Função para adicionar produto: Adicione nome, quantidade e preço ao array.
+3. Função para remover produto: Remova um produto específico do array.
+4. Função para listar produtos por faixa de preço: Use for e if...else para filtrar:
+	- Produtos baratos (< R$ 50)
+	- Produtos médios (R$ 50 a R$ 150)
+	- Produtos caros (> R$ 150)
+5. Função para alertar sobre estoque baixo: Identifique produtos com quantidade <= 5.
+6. Menu interativo: Use while com if...else aninhado para navegação.
+
+Dados Iniciais:
+
+```javascript
+let nomeProdutos = ["Arroz", "Feijão", "Açúcar", "Sal"];
+let quantidades = [50, 30, 20, 15];
+let precos = [3.50, 8.00, 4.50, 2.00];
+```
+
+> **DESAFIO:** Crie um sistema robusto que valide todas as entradas, permita manipulação completa do estoque e gere relatórios detalhados.
+
+*/
+
+    let nomeProdutos = ["Arroz", "Feijão", "Açúcar", "Sal"];
+    let quantidades = [50, 30, 20, 15];
+    let precos = [3.50, 8.00, 4.50, 2.00];
+
+    // ---------------- VALIDAR ENTRADAS ----------------
+    function validarNumero(valor) {
+        while (isNaN(valor) || valor < 0) {
+            valor = Number(prompt("Valor inválido! Digite novamente:"));
+        }
+        return valor;
+    }
+
+    // ---------------- ADICIONAR PRODUTO ----------------
+    function adicionarProduto(nome, quantidade, preco) {
+        nomeProdutos.push(nome);
+        quantidades.push(quantidade);
+        precos.push(preco);
+
+        return `Produto "${nome}" adicionado com sucesso!`;
+    }
+
+    // ---------------- REMOVER PRODUTO ----------------
+    function removerProduto(nome) {
+        let indice = nomeProdutos.indexOf(nome);
+
+        if (indice === -1) {
+            return `Produto "${nome}" não encontrado!`;
+        }
+
+        let removido = nomeProdutos.splice(indice, 1);
+        quantidades.splice(indice, 1);
+        precos.splice(indice, 1);
+
+        return `Produto "${removido}" removido com sucesso!`;
+    }
+
+    // ---------------- LISTAR POR FAIXA DE PREÇO ----------------
+    function listarPorPreco() {
+        let texto = "=== RELATÓRIO POR PREÇO ===\n\n";
+
+        for (let i = 0; i < nomeProdutos.length; i++) {
+            let faixa = "";
+
+            if (precos[i] < 50) {
+                faixa = "BARATO";
+            } else if (precos[i] <= 150) {
+                faixa = "MÉDIO";
+            } else {
+                faixa = "CARO";
+            }
+
+            texto += `${nomeProdutos[i]} - R$ ${precos[i].toFixed(2)} (${faixa})\n`;
+        }
+        return texto;
+    }
+
+    // ---------------- ALERTA DE ESTOQUE BAIXO ----------------
+    function estoqueBaixo() {
+        let texto = "=== ESTOQUE BAIXO (<= 5) ===\n\n";
+        let encontrado = false;
+
+        for (let i = 0; i < quantidades.length; i++) {
+            if (quantidades[i] <= 5) {
+                texto += `${nomeProdutos[i]} - Qtd: ${quantidades[i]}\n`;
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            texto += "Nenhum produto com estoque baixo.";
+        }
+
+        return texto;
+    }
+
+    // ---------------- LISTAR TODOS ----------------
+    function listarTodos() {
+        let texto = "=== ESTOQUE ATUAL ===\n\n";
+
+        for (let i = 0; i < nomeProdutos.length; i++) {
+            texto += `${nomeProdutos[i]} - Qtd: ${quantidades[i]} - R$ ${precos[i].toFixed(2)}\n`;
+        }
+
+        return texto;
+    }
+
+    // ---------------- MENU INTERATIVO ----------------
+    let opcao = 1;
+
+    while (opcao !== 0) {
+        opcao = Number(prompt(
+            "=== SISTEMA DE ESTOQUE ===\n\n" +
+            "1. Adicionar Produto\n" +
+            "2. Remover Produto\n" +
+            "3. Listar Todos os Produtos\n" +
+            "4. Listar por Faixa de Preço\n" +
+            "5. Verificar Estoque Baixo\n" +
+            "0. Sair\n\n" +
+            "Escolha uma opção:"
+        ));
+
+        switch (opcao) {
+            case 1:
+                let nome = prompt("Nome do produto:");
+                let qtd = validarNumero(Number(prompt("Quantidade:")));
+                let preco = validarNumero(Number(prompt("Preço:")));
+                alert(adicionarProduto(nome, qtd, preco));
+                break;
+
+            case 2:
+                let nomeRemover = prompt("Nome do produto a remover:");
+                alert(removerProduto(nomeRemover));
+                break;
+
+            case 3:
+                alert(listarTodos());
+                break;
+
+            case 4:
+                alert(listarPorPreco());
+                break;
+
+            case 5:
+                alert(estoqueBaixo());
+                break;
+
+            case 0:
+                alert("Saindo...");
+                break;
+
+            default:
+                alert("Opção inválida!");
+        }
+    }
+
+
+</script>
