@@ -31,7 +31,7 @@ let precos = [3.50, 8.00, 4.50, 2.00];
     let quantidades = [50, 30, 20, 15];
     let precos = [3.50, 8.00, 4.50, 2.00];
 
-    // função valida entrada
+    // processamento
     function validarEntrada(valor) {
         while (isNaN(valor) || valor < 0) {
             valor = Number(prompt(`Valor inválido! Digite novamente:`));
@@ -39,31 +39,28 @@ let precos = [3.50, 8.00, 4.50, 2.00];
         return valor;
     }
 
-    // função add produto
     function adicionarProduto(nome, quantidade, preco) {
         nomeProdutos.push(nome);
         quantidades.push(quantidade);
         precos.push(preco);
 
-        return `Produto "${nome}" adicionado com sucesso!`;
+        return `O produto "${nome}" foi adicionado com sucesso!`;
     }
 
-    // função remove produto
     function removerProduto(nome) {
         let posicao = nomeProdutos.indexOf(nome);
 
         if (posicao < 0) {
-            return `Produto "${nome}" não encontrado!`;
+            return `O produto "${nome}" não foi encontrado!`;
         }
 
         let removido = nomeProdutos.splice(posicao, 1);
         quantidades.splice(posicao, 1);
         precos.splice(posicao, 1);
 
-        return `Produto "${removido}" removido com sucesso!`;
+        return `O produto "${removido}" foi removido com sucesso!`;
     }
 
-    // função lista produtos
     function listarPorPreco() {
         let texto = `RELATÓRIO POR PREÇO\n\n`;
 
@@ -83,14 +80,13 @@ let precos = [3.50, 8.00, 4.50, 2.00];
         return texto;
     }
 
-    // função alerta estoque baixo
     function estoqueBaixo() {
         let texto = `ESTOQUE BAIXO (Produtos com menos de 5 itens)\n\n`;
         let lista = "";
 
         for (let i = 0; i < quantidades.length; i++) {
             if (quantidades[i] <= 5) {
-                lista = lista + `${nomeProdutos[i]} - Qtd: ${quantidades[i]}\n`;
+                lista = lista + `${nomeProdutos[i]} - Quantidade: ${quantidades[i]}\n`;
             }
         }
 
@@ -102,7 +98,7 @@ let precos = [3.50, 8.00, 4.50, 2.00];
     }
 
 
-    // menu saída
+    // saída
     let opcao = 1;
 
     while (opcao !== 0) {
@@ -117,12 +113,12 @@ let precos = [3.50, 8.00, 4.50, 2.00];
         ));
 
         if (opcao === 1) {
-            let nome = prompt(`Nome do produto:`);
-            let qtd = validarEntrada(Number(prompt(`Quantidade:`)));
-            let preco = validarEntrada(Number(prompt(`Preço:`)));
-            alert(adicionarProduto(nome, qtd, preco));
+            let nome = prompt(`Informe o nome do produto:`);
+            let quanti = validarEntrada(Number(prompt(`Informe a quantidade:`)));
+            let preco = validarEntrada(Number(prompt(`Informe o preço:`)));
+            alert(adicionarProduto(nome, quanti, preco));
         } else if (opcao === 2) {
-            let nomeRemover = prompt(`Nome do produto a ser removido:`);
+            let nomeRemover = prompt(`Informe o nome do produto a ser removido:`);
             alert(removerProduto(nomeRemover));
         } else if (opcao === 3) {
             alert(listarPorPreco());

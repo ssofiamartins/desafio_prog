@@ -1,0 +1,108 @@
+<script>
+    /*## Problema 7: Calculadora de Desconto com Categorias de Clientes
+
+Contexto: Uma loja precisa de um sistema que calcule o preço final de uma compra baseado na categoria do cliente e valor total. O sistema deve permitir adicionar itens, remover itens e calcular o total com desconto.
+
+### Requisitos:
+1. Função para validar entrada: Valide categoria de cliente (use while - apenas "Premium", "Gold" ou "Standard").
+2. Função para validar preço: Valide se o preço é positivo.
+3. Função para adicionar item ao carrinho: Use push() para adicionar nome e preço.
+4. Função para remover item: Remova um item do carrinho pelo índice.
+5. Função para calcular total: Use for para somar todos os itens.
+6. Função para aplicar desconto: Use if...else aninhado:
+	- Premium: 20% de desconto
+	- Gold: 15% de desconto
+	- Standard: 5% de desconto
+	- (Mas se o total for > R$ 500, adicione 5% extra de desconto)
+7. Função para gerar recibo: Mostre itens, total, desconto e preço final.
+
+Dados Iniciais:
+
+```javascript
+let itensCarrinho = ["Camiseta", "Calça", "Meia"];
+let precos = [50, 150, 15];
+let categoriaCliente = ""; // Será preenchida pelo usuário
+```*/
+//Entrada
+let itensCarrinho = ["Camiseta", "Calça", "Meia"];
+let precos = [50, 150, 15];
+let categoriaCliente = ""; 
+let categoriasvalidas = ["premium", "standard", "gold"]
+//Processamento
+function validarentrada (categoria){
+    while(categoriasvalidas.includes(categoria) == false){
+        categoria = prompt(`Informe sua categoria de cliente Ex "Standard"`).toLowerCase();
+    }
+    return categoria
+}
+function validarPreco (preco){
+ while(preco < 0 || isNaN(preco)){
+    preco = Number(prompt(`O preço do item que deseja adicionar ao carrinho deve ser positivo`))
+ }
+ return preco
+}
+function adicionarItenAoCarrinho(){
+    let nome = prompt(`Qual é o nome do item que deseja adicionar ao carrinho`);
+    let preco = Number(prompt(`Qual é o preço do item que deseja adiconar ao carrinho`));
+    preco = validarPreco(preco);
+    itensCarrinho.push(nome)
+    precos.push(preco)
+}
+function removerItenDoCarrinho(){
+    let itemRemovido = Number(prompt(`Informe o número da posição da lista abaixo que vc deseja remover do carrinho ${itensCarrinho.join(` - `)} sendo o 1° item da lista com valor de posição 0`))
+    itensCarrinho.splice(itemRemovido, 1)
+    precos.splice(itemRemovido, 1);
+}
+function somarTodosOsItens(){
+    let somaDeTodosOsItens = 0
+    for(let i = 0; i < precos.length; i++){
+       somaDeTodosOsItens = somaDeTodosOsItens + precos[i]
+    }
+    return somaDeTodosOsItens
+}
+function aplicarDescontos (somaDeTodosOsItens, categoria){
+   let totaldedescontos = 0;
+   let valoresAposDescontos;
+ if(somaDeTodosOsItens > 500){
+    totaldedescontos = totaldedescontos + 5
+ }
+ if(categoria == "standard"){
+    totaldedescontos = totaldedescontos + 5
+ }
+ else if (categoria == "gold"){
+    totaldedescontos = totaldedescontos + 15
+ }
+ else{
+    totaldedescontos = totaldedescontos + 20
+ }
+ valoresAposDescontos = somaDeTodosOsItens - somaDeTodosOsItens/100*totaldedescontos;
+ return valoresAposDescontos
+}
+function gerarRecibo(){
+categoriaCliente = prompt(`Informe sua categoria de cliente Ex "Standard"`).toLowerCase();
+categoriaCliente = validarentrada(categoriaCliente);
+let opcoes = 0
+ while(opcoes != 3){
+ opcoes = Number(prompt(`Digite o número de acordo do quer que aconteça:\n1: Adicionar item ao carrinho\n2: Remover item do carrinho\n3: Finalizar Compra`))
+    if(opcoes == 1){
+    adicionarItenAoCarrinho()
+}
+  else if (opcoes == 2){
+    removerItenDoCarrinho()
+ }
+ else if (opcoes == 3){
+ }
+ else{
+    alert(`Erro as opcões podem ser entre 1 e 3`)
+ }
+ }
+   let SomadositensdoCarrinho = somarTodosOsItens();
+   let valoresAposDescontos = aplicarDescontos(SomadositensdoCarrinho, categoriaCliente);
+   let desconto = SomadositensdoCarrinho - valoresAposDescontos;
+document.write(`Os itens comprados foram ${itensCarrinho.join(" - ")}<br>`)
+document.write(`O valor total é R$${SomadositensdoCarrinho}<br>`)
+document.write(`O valor do desconto é R$${desconto}<br>`)
+document.write(`O valor após os descontos é R$${valoresAposDescontos}`)
+}
+gerarRecibo()
+</script>
